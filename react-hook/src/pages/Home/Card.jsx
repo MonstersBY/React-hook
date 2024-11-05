@@ -8,8 +8,8 @@ function Card ({url}) {
         fetch(url)
         .then((response) => response.json())
         .then((data) => {
-            console.log('-----------------')
-            console.log(data);
+            // console.log('-----------------')
+            // console.log(data);
             
             setPokemon(data);
         })
