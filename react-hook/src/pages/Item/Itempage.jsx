@@ -1,8 +1,8 @@
-import './Itempage.scss';
+import './Itempage.scss'
 
-import React, { useState, useEffect } from 'react';
-import { Pagination} from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import React, { useState, useEffect } from 'react'
+import { Pagination} from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 function CreateSlider({sprites})  {
   const slides = Object.values(sprites).filter((item) => typeof item === 'string')
@@ -20,22 +20,23 @@ function CreateSlider({sprites})  {
         ))}
       </Swiper>
     </>
-  );
+  )
 }
 
 function Item() {
-  const [pokemon, setPokemon] = useState([]);
+  const [pokemon, setPokemon] = useState([])
 
   useEffect(() => {
       fetch('https://pokeapi.co/api/v2/pokemon/'+ window.location.pathname.split('/')[2])
       .then((response) => response.json())
       .then((data) => {
-          setPokemon(data);
+          setPokemon(data)
+          // pokemon-species/4/
       })
       .catch((err) => {
-          console.log(err.message);
-      });
-  }, []);
+          console.log(err.message)
+      })
+  }, [])
 
   if (pokemon.id) {
 
@@ -65,8 +66,8 @@ function Item() {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
   
-export default Item;
+export default Item
