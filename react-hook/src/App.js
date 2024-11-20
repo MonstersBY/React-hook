@@ -19,8 +19,11 @@ function App() {
       </header>
       <Routes>
         <Route path='/' element={<Homepage />}/>
-        <Route path='/card/*' element={<Item />}/>
-        <Route path='/*' element={<Notfoundpage />}/>
+        {/* <Route path='/card/*' element={<Item />}/> */}
+        <Route path='card' element={<Item />}>
+          <Route path=':id' element={<Item />}/>
+        </Route>
+        {/* <Route path='/*' element={<Notfoundpage />}/> */}
       </Routes>
     </div>
   );

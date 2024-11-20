@@ -1,5 +1,6 @@
 import './Itempage.scss'
 
+import { Link } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
 import { Pagination} from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -21,6 +22,74 @@ function CreateSlider({sprites})  {
       </Swiper>
     </>
   )
+}
+
+function CreateChain(url) {
+  const [chainpoke, setChainpoke] = useState()
+  const info = {}
+  
+  useEffect(() => {
+    fetch('https://pokeapi.co/api/v2/pokemon/'+ url.url)
+    .then((response) => response.json())
+    .then((data) => {
+      setChainpoke(data)
+    })
+    .catch((err) => {
+      console.log(err.message)
+    })
+  }, [])
+  
+  if(chainpoke) {
+    return (
+    <Link to={`/card/${chainpoke.id}`} onClick={() => window.location.href=`/card/${chainpoke.id}`} className='card evolution-chain'>
+      <div className='card-name'>{chainpoke.name}</div>
+      <img src={chainpoke.sprites.front_default} alt="" />
+      <div className='card-type'>
+          {chainpoke.types.map((item) => (
+            <>
+              <span className={item.type.name}>{item.type.name}</span>
+            </>
+          ))}
+      </div>
+    </Link>
+    )
+
+  }
+}
+
+function EvolutionChain({pokemonInfo})  {
+  const [chain, setChain] = useState([])
+  function FindUrl(data, chains) {
+    for (let i = 0; i < data.evolves_to.length; i++) {
+      FindUrl(data.evolves_to[i], chains)
+    }
+    return chains.push(data.species.url.split('/')[data.species.url.split('/').length - 2])
+  }
+
+  useEffect(() => {
+    fetch(pokemonInfo.evolution_chain.url)
+    .then((response) => response.json())
+    .then((data) => {
+      // data
+      const chains = []
+      FindUrl(data.chain, chains)
+      setChain(chains.reverse())
+    })
+    .catch((err) => {
+      console.log(err.message)
+    })
+  }, [])
+  // console.log(chain);
+
+  if(chain) {
+    return (
+      <>
+        {chain.map((item) => (
+          <CreateChain url={item}/>
+        ))}
+      </>
+    )
+  }
 }
 
 function Item() {
@@ -47,7 +116,6 @@ function Item() {
     .catch((err) => {
       console.log(err.message)
     })
-    
   }, [])
 
   // useEffect(() => {
@@ -70,7 +138,7 @@ function Item() {
   }
 
 
-  if (pokemon.id && pokemonInfo) {
+  if (pokemon.id && pokemonInfo.id) {
 
     return (
       <>
@@ -108,9 +176,9 @@ function Item() {
           </div>
         </div>
         <div className='evolution'>
-          <div className='evolution-item'>
-            <div className='evolution-item__name'>name</div>
-            <div className='evolution-item__img'>name</div>
+          <div className='evolution-title'>Evolution chain</div>
+          <div className='evolution-chains'>
+            <EvolutionChain pokemonInfo={pokemonInfo}/>
           </div>
         </div>
       </>

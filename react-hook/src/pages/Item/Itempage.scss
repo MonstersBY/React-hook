@@ -1,3 +1,6 @@
+.pokemon {
+    margin-bottom: 4rem;
+}
 .pokemon-container {
     margin: auto;
     width: 80%;
@@ -72,4 +75,17 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+
+.evolution {
+    &-title {
+        font-family: Teko;
+        font-size: 5rem;
+        text-transform: capitalize;
+    }
+    &-chains {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 2rem;
+    }
 }
